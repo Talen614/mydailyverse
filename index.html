@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyVerse&#x271D</title>
+    <style>
+        :root {
+            --glass: rgba(255, 255, 255, 0.15);
+            --text: #ffffff;
+            --bg-gradient: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), 
+                          url('https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=1920&q=80');
+            --hr-bg: rgba(255,255,255,0.3);
+        }
+
+        [data-theme="light"] {
+            --glass: rgba(0, 0, 0, 0.1);
+            --text: #000000;
+            --bg-gradient: linear-gradient(rgba(255,255,255,0.55), rgba(255,255,255,0.55)), 
+                          url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1920&q=80');
+            --hr-bg: rgba(0,0,0,0.3);
+        }
+
+
+
+        [data-theme="dawn"] {
+            --glass: rgba(255, 255, 255, 0.2);
+            --text: #111111;
+            --bg-gradient: linear-gradient(rgba(255,255,255,0.55), rgba(255,255,255,0.25)), 
+                          url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1920&q=80');
+
+            --hr-bg: rgba(0,0,0,0.2);
+        }
+
+        [data-theme="forest"] {
+            --glass: rgba(255, 255, 255, 0.18);
+            --text: #ffffff;
+            --bg-gradient: linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.25)), 
+                          url('https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1920&q=80');
+            --hr-bg: rgba(255,255,255,0.3);
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: var(--bg-gradient);
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: var(--text);
+        }
+
+        .dashboard {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            background: var(--glass);
+            padding: 3rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            width: 100%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        #time {
+            font-size: 5rem;
+            font-weight: 200;
+            margin: 0;
+        }
+
+        #greeting {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            font-weight: 300;
+            opacity: 0.9;
+        }
+
+        .mantra {
+            font-style: italic;
+            max-width: 300px;
+            line-height: 1.6;
+        }
+
+        hr {
+            border: 0;
+            height: 1px;
+            background: var(--hr-bg);
+            margin: 20px 0;
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--glass);
+            border: none;
+            color: var(--text);
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard {
+                padding: 1.5rem;
+                max-width: 90vw;
+                border-radius: 15px;
+            }
+
+            #time {
+                font-size: 3.5rem;
+                margin-bottom: 0.5rem;
+            }
+
+            #greeting {
+                font-size: 1.2rem;
+                margin-bottom: 1rem;
+            }
+
+            hr {
+                margin: 15px 0;
+            }
+
+            .mantra {
+                max-width: 280px;
+                font-size: 0.95rem;
+            }
+
+            .theme-toggle {
+                top: 10px;
+                right: 10px;
+                padding: 8px;
+                font-size: 1.2rem;
+            }
+
+            #verse-container {
+                font-size: 0.95rem !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .dashboard {
+                padding: 1rem;
+                border-radius: 12px;
+            }
+
+            #time {
+                font-size: 2.5rem;
+                margin-bottom: 0.3rem;
+            }
+
+            #greeting {
+                font-size: 1rem;
+                margin-bottom: 0.8rem;
+            }
+
+            hr {
+                margin: 12px 0;
+            }
+
+            .mantra {
+                max-width: 250px;
+                font-size: 0.9rem;
+            }
+
+            button {
+                font-size: 0.9rem !important;
+                padding: 6px 10px !important;
+            }
+
+            #verse-container {
+                font-size: 0.85rem !important;
+                min-height: 2.8em !important;
+            }
+
+            #devotional {
+                margin-top: 0.75rem !important;
+                font-size: 0.85rem !important;
+            }
+
+            .stats {
+                margin-top: 0.75rem !important;
+                font-size: 0.75rem !important;
+            }
+
+            .verse-wrapper {
+                gap: 0.3rem !important;
+            }
+
+            #refresh-verse-btn {
+                padding: 6px 10px !important;
+                font-size: 1rem !important;
+            }
+        }
+
+        @media (max-width: 600px) {
+            body, html {
+                background-size: contain;
+            }
+        }
+              </style>
+              <!--Thanks to <a href="https://github.com/n00b01" target="_blank">For insights and guidance</a>-->
+
+    <body>
+        <div class="dashboard">
+            <button class="theme-toggle" id="theme-toggle" aria-label="Change theme background">🌙</button>
+            <h1 id="time">00:00</h1>
+            <div id="greeting">Hey there</div>
+
+            <div id="username-container" style="margin-top: 1rem; margin-bottom: 1rem; gap: 0.5rem; display: flex; align-items: center; justify-content: center; flex-wrap: wrap;">
+                <label for="username-input" style="font-size:0.9rem;">Name:</label>
+                <input id="username-input" type="text" aria-label="Your name" style="border-radius: 8px; border: 1px solid rgba(255,255,255,0.5); background: rgba(255,255,255,0.12); color: var(--text); padding: 5px 8px;" />
+                <button id="name-save-btn" style="padding: 6px 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.5); background: rgba(255,255,255,0.15); color: var(--text); cursor: pointer;">Save Name</button>
+            </div>
+
+            <hr>
+            <div class="verse-wrapper" style="display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin-bottom: 1rem;">
+                <div id="verse-container" aria-live="polite" style="font-size: 1rem; opacity:0.95; line-height:1.4; min-height:3.2em; flex: 1;">Loading daily verse...</div>
+                <button id="refresh-verse-btn" aria-label="Load a new verse" style="padding: 8px 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.5); background: rgba(255,255,255,0.15); color: var(--text); cursor: pointer; font-size: 1.2rem; line-height: 1;">↻</button>
+            </div>
+            <button id="notify-btn" style="padding: 8px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.5); background: rgba(255,255,255,0.15); color: var(--text); cursor: pointer;" aria-live="polite">Enable Daily Notifications</button>
+            <p id="devotional" style="margin-top:1rem; font-size:0.95rem; opacity:0.9;"><em>Spreading evangelism through daily verses.</em></p>
+            <p class="mantra">"Take a deep breath. You are doing amazing today."</p>
+            <div class="stats" style="margin-top:1rem; font-size:0.85rem; opacity:0.8;">Stats: <span id="stats-visited">Visited: 0</span> | <span id="stats-verses">Verses loaded: 0</span> | <span id="stats-notifications">Notifications sent: 0</span></div>
+            <div style="margin-top:1rem; font-size:1.25rem; opacity:0.95;">
+                <a href="https://www.paypal.com/donate?business=agutufabian%40gmail.com" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: none;">☕ Buy me a coffee</a>
+            </div>
+            </div>
+
+    <script>
+        const mantras = [
+            "Take a deep breath. You are doing amazing today.",
+            "Embrace the present moment. You are exactly where you need to be.",
+            "Believe in yourself. You have the power to create change.",
+            "Every day is a new opportunity. Make it count.",
+            "You are stronger than you think. Keep going.",
+            //"Come on I really love you fr 😭"
+        ];
+
+        const localState = {
+            username: localStorage.getItem('dashboard_username') || '',
+            stats: {
+                visits: Number(localStorage.getItem('dashboard_stats_visits') || 0),
+                verses: Number(localStorage.getItem('dashboard_stats_verses') || 0),
+                notifications: Number(localStorage.getItem('dashboard_stats_notifications') || 0)
+            }
+        };
+
+        const devotionalPrompts = [
+            'Take one kind action today inspired by the verse.',
+            'Share encouragement with someone who needs it.',
+            'Pause and pray for guidance and gratitude.',
+            'Write one line of thankfulness in your journal.',
+            'Look for a chance to be patient and gentle today.'
+        ];
+
+        function updateDashboard() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            document.getElementById('time').innerText = `${hours}:${minutes}`;
+
+            let greeting = 'Good Evening';
+            if (now.getHours() < 12) greeting = 'Good Morning';
+            else if (now.getHours() < 18) greeting = 'Good Afternoon';
+
+            document.getElementById('greeting').innerText = `${greeting}, ${localState.username}`;
+        }
+
+        const themeStates = [
+            { key: 'dark', icon: '🌞' },
+            { key: 'light', icon: '☀️' },
+            { key: 'dawn', icon: '🌊' },
+            { key: 'forest', icon: '🌿' }
+        ];
+
+        function applyTheme(theme) {
+            const html = document.documentElement;
+            const toggle = document.getElementById('theme-toggle');
+            const state = themeStates.find((item) => item.key === theme) || themeStates[0];
+            if (state.key === 'dark') {
+                html.removeAttribute('data-theme');
+            } else {
+                html.setAttribute('data-theme', state.key);
+            }
+            toggle.innerText = state.icon;
+            localStorage.setItem('dashboard_theme', state.key);
+        }
+
+        function toggleTheme() {
+            const currentKey = document.documentElement.getAttribute('data-theme') || 'dark';
+            const currentIndex = themeStates.findIndex((item) => item.key === currentKey);
+            const nextIndex = (currentIndex + 1) % themeStates.length;
+            applyTheme(themeStates[nextIndex].key);
+        }
+
+        async function fetchVerseOurManna() {
+            const response = await fetch('https://beta.ourmanna.com/api/v1/get/?format=json&order=random&t=' + Date.now());
+            if (!response.ok) throw new Error(`OurManna HTTP ${response.status}`);
+            const data = await response.json();
+            const text = data?.verse?.details?.text;
+            const ref = data?.verse?.details?.reference;
+            if (!text) throw new Error('No verse data from OurManna');
+            return `${text} — ${ref}`;
+        }
+
+        async function fetchVerseLabsBible() {
+            const response = await fetch('https://labs.bible.org/api/?passage=random&type=json&t=' + Date.now());
+            if (!response.ok) throw new Error(`Labs Bible HTTP ${response.status}`);
+            const data = await response.json();
+            if (!Array.isArray(data) || !data.length) throw new Error('No labs verse found');
+            const item = data[0];
+            const text = item.text;
+            const ref = `${item.bookname} ${item.chapter}:${item.verse}`;
+            return `${text} — ${ref}`;
+        }
+
+        function getLocalFallbackVerse() {
+            const localList = [
+                'Philippians 4:13 — I can do all things through Christ who strengthens me.',
+                'Psalm 23:1 — The Lord is my shepherd; I shall not want.',
+                'Jeremiah 29:11 — For I know the plans I have for you, declares the LORD.',
+                'Matthew 11:28 — Come to me, all who labor and are heavy laden, and I will give you rest.'
+            ];
+            const n = Math.floor(Math.random() * localList.length);
+            return localList[n];
+        }
+
+        async function fetchBibleVerse(forceRefresh = false) {
+            const verseContainer = document.getElementById('verse-container');
+            const todayKey = `dailyVerse_${new Date().toISOString().slice(0, 10)}`;
+            const cached = localStorage.getItem(todayKey);
+
+            if (cached && !forceRefresh) {
+                verseContainer.innerText = cached;
+                return cached;
+            }
+
+            if (forceRefresh) {
+                verseContainer.innerText = 'Loading new verse...';
+            }
+
+            try {
+                let verseText;
+                let fetchError;
+                
+                try {
+                    verseText = await fetchVerseOurManna();
+                } catch (err1) {
+                    fetchError = err1;
+                    console.warn('OurManna failed:', err1.message);
+                    try {
+                        verseText = await fetchVerseLabsBible();
+                    } catch (err2) {
+                        console.warn('Labs Bible failed:', err2.message);
+                        verseText = getLocalFallbackVerse();
+                    }
+                }
+
+                verseContainer.innerText = verseText;
+                localStorage.setItem(todayKey, verseText);
+
+                localState.stats.verses += 1;
+                localStorage.setItem('dashboard_stats_verses', localState.stats.verses);
+                updateStats();
+
+                const devotional = document.getElementById('devotional');
+                devotional.innerText = devotionalPrompts[Math.floor(Math.random() * devotionalPrompts.length)];
+
+                return verseText;
+            } catch (err) {
+                const fallback = getLocalFallbackVerse();
+                verseContainer.innerText = fallback;
+                console.error('Verse fetch final error:', err);
+                return fallback;
+            }
+        }
+
+        function showDailyNotification(verseText) {
+            if (!('Notification' in window)) return;
+            if (Notification.permission === 'granted') {
+                localState.stats.notifications += 1;
+                localStorage.setItem('dashboard_stats_notifications', localState.stats.notifications);
+                updateStats();
+
+                new Notification('Daily Bible Verse', {
+                    body: verseText,
+                    icon: 'https://upload.wikimedia.org/wikipedia/commons/4/4f/Bible_icon.png'
+                });
+            }
+        }
+
+        function getNextNotificationDelay(time = '09:00') {
+            const [hour, minute] = time.split(':').map(Number);
+            const now = new Date();
+            const target = new Date();
+            target.setHours(hour, minute, 0, 0);
+            if (target <= now) target.setDate(target.getDate() + 1);
+            return target - now;
+        }
+
+        function scheduleDailyNotification() {
+            const verseText = document.getElementById('verse-container').innerText;
+            if (!verseText || verseText.toLowerCase().startsWith('unable')) return;
+
+            const schedule = () => {
+                showDailyNotification(verseText);
+                setTimeout(schedule, 24 * 60 * 60 * 1000);
+            };
+            setTimeout(schedule, getNextNotificationDelay('09:00'));
+        }
+
+        async function initNotifications() {
+            const notifyBtn = document.getElementById('notify-btn');
+            if (!('Notification' in window)) {
+                notifyBtn.disabled = true;
+                notifyBtn.innerText = 'Notifications not supported';
+                return;
+            }
+
+            const isGrantedStored = localStorage.getItem('dashboard_notification_granted') === 'true';
+            const isGrantedBrowser = Notification.permission === 'granted';
+
+            if (isGrantedStored || isGrantedBrowser) {
+                notifyBtn.innerText = 'Daily notifications active';
+                notifyBtn.disabled = true;
+                localStorage.setItem('dashboard_notification_granted', 'true');
+                scheduleDailyNotification();
+                return;
+            }
+
+            notifyBtn.addEventListener('click', async () => {
+                const permission = await Notification.requestPermission();
+                if (permission === 'granted') {
+                    notifyBtn.innerText = 'Daily notifications active';
+                    notifyBtn.disabled = true;
+                    localStorage.setItem('dashboard_notification_granted', 'true');
+                    scheduleDailyNotification();
+                    showDailyNotification(document.getElementById('verse-container').innerText);
+                } else {
+                    notifyBtn.innerText = 'Permission denied';
+                }
+            });
+        }
+
+        function updateStats() {
+            document.getElementById('stats-visited').innerText = `Visited: ${localState.stats.visits}`;
+            document.getElementById('stats-verses').innerText = `Verses loaded: ${localState.stats.verses}`;
+            document.getElementById('stats-notifications').innerText = `Notifications sent: ${localState.stats.notifications}`;
+        }
+
+        function saveUsername() {
+            const input = document.getElementById('username-input');
+            const name = input.value.trim() || 'Friend';
+            localState.username = name;
+            localStorage.setItem('dashboard_username', name);
+            updateDashboard();
+        }
+
+        function copyVerse() {
+            const verseText = document.getElementById('verse-container').innerText;
+            if (!navigator.clipboard) return;
+            navigator.clipboard.writeText(verseText).then(() => {
+                alert('Verse copied to clipboard');
+            }).catch(console.error);
+        }
+
+        function initBackgroundSync() {
+            setInterval(() => {
+                if (navigator.onLine) {
+                    fetchBibleVerse(true);
+                } else {
+                    document.getElementById('verse-container').innerText += ' (offline mode)';
+                }
+            }, 30 * 60 * 1000);
+        }
+
+        function initUI() {
+            const usernameInput = document.getElementById('username-input');
+            const usernameContainer = document.getElementById('username-container');
+            if (localState.username) {
+                document.getElementById('greeting').innerText = `Good ${new Date().getHours() < 12 ? 'Morning' : new Date().getHours() < 18 ? 'Afternoon' : 'Evening'}, ${localState.username}`;
+                usernameContainer.style.display = 'none';
+            } else {
+                usernameContainer.style.display = 'flex';
+            }
+
+            document.getElementById('name-save-btn').addEventListener('click', () => {
+                saveUsername();
+                document.getElementById('username-container').style.display = 'none';
+            });
+
+            document.getElementById('refresh-verse-btn').addEventListener('click', () => {
+                fetchBibleVerse(true);
+            });
+
+            applyTheme(localStorage.getItem('dashboard_theme') || 'dark');
+            document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
+            document.querySelector('.mantra').innerText = `"${mantras[Math.floor(Math.random() * mantras.length)]}"`;
+
+            localState.stats.visits += 1;
+            localStorage.setItem('dashboard_stats_visits', localState.stats.visits);
+            updateStats();
+
+            updateDashboard();
+            setInterval(updateDashboard, 1000);
+
+            fetchBibleVerse().then(() => initNotifications());
+            initBackgroundSync();
+        }
+
+        initUI();
+    </script>
+    </body>
+</html>
